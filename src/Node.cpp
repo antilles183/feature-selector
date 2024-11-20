@@ -10,7 +10,7 @@
  * @brief Construct a new Node:: Node object
  * 
 *******************************************************************************/
-Node::Node() : _accuracy(-1) {}
+Node::Node(double acc) : _accuracy(acc) {}
 
 
 
@@ -69,10 +69,24 @@ bool Node::insert(int n)
  * 
  * @return double 
 *******************************************************************************/
-double Node::accuracy()
+double Node::accuracy() const
 {
-    return _accuracy;
+    return _accuracy * 100;
 }
+
+
+
+/*******************************************************************************
+ * @brief 
+ * 
+ * @param acc 
+*******************************************************************************/
+void Node::setAccuracy(double acc)
+{
+    _accuracy = acc;
+
+}
+
 
 
 
@@ -99,5 +113,20 @@ std::ostream& operator<<(std::ostream& os, const Node& rhs)
     os << "}";
 
     return os;
+
+}
+
+
+
+bool Node::operator<(const Node& rhs) const 
+{
+    return this->_accuracy < rhs._accuracy;
+
+}
+
+
+bool Node::operator>(const Node& rhs) const 
+{
+    return this->_accuracy > rhs._accuracy;
 
 }
