@@ -6,12 +6,7 @@
 class Search
 {
 
-private:
-    /* data */
-
 public:
-    Search(/* args */);
-    ~Search();
 
     Node forwardSelection(std::set<int> featureSet, 
                           double (*eval)(const Node& node));
@@ -21,6 +16,16 @@ public:
 
     Node specialAlgorithm(std::set<int> featureSet,
                           double (*eval)(const Node& node));
+
+    
+    // PRIVATE HELPERS
+    Node forwardSelectionEngine(std::set<int>& featureSet,
+                                const Node& parent,
+                                double (*eval)(const Node& node));
+
+    Node backwardEliminationEngine(std::set<int>& featureSet,
+                                   const Node& parent,
+                                   double (*eval)(const Node& node));
                           
 };
 
