@@ -52,7 +52,7 @@ Node Search::specialAlgorithm(std::set<int> featureSet,
                               double (*eval)(const Node& node))
 {
 
-    std::cout << "specialAlgoritm()\n";
+    std::cout << "Not Yet Implemented\n";
 
     return Node(featureSet);
 

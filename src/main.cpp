@@ -56,7 +56,7 @@ int main(int argc, char *argv[]) {
         break;
 
     case 3:
-        std::cout << "***RUNNING SPECIAL ALGORITHM***\n";
+        std::cout << "***RUNNING ATILL006 SPECIAL ALGORITHM***\n";
         io.console('-', 80, true);
         search.specialAlgorithm(featureSet, Evaluator::random);
         break;
