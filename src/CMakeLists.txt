@@ -3,6 +3,8 @@ add_library(niceUltronLib
     Node.cpp
     Evaluator.cpp
     Search.cpp
+    Classifier.cpp
+    Validator.cpp
 )
 
 target_link_libraries(niceUltronLib)
