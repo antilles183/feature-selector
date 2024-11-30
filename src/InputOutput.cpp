@@ -137,6 +137,7 @@ bool InputOutput::getSentinal(std::string l_sentinal) {
 }
 
 
+
 /* # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
 # OUTPUT FUNCTIONS
@@ -157,5 +158,102 @@ void InputOutput::console(char l_symbol, unsigned l_repeat, bool l_newline) {
     }
 
     if(l_newline) { std::cout << '\n'; }
+
+}
+
+
+
+/*******************************************************************************
+ * @brief appends filename argument with current datetime
+ * 
+ * @param dataset 
+ * @param filename 
+ * @param extension 
+ * @param delimiter 
+ * @param outputDirectory 
+*******************************************************************************/
+void InputOutput::writeToFile(const std::vector<std::vector<double>> &dataset,
+                              std::string filename,
+                              std::string extension,
+                              char delimiter,
+                              std::string outputDirectory)
+{
+    // Get the current time
+    auto now = std::chrono::system_clock::now();
+
+    // Convert to time_t for formatting
+    std::time_t currentTime = std::chrono::system_clock::to_time_t(now);
+
+    // Format the time into a readable string
+    std::stringstream ssTime;
+    ssTime << std::put_time(std::localtime(&currentTime), "%Y%m%d-%H%M%S");
+
+    // build complete filenamepath and open
+    std::string outFilename = outputDirectory + filename + "-" + ssTime.str() + extension;
+    std::ofstream outFile(outFilename);
+
+    // GUARD: bad open. check directory exists
+    if (!outFile.is_open()) {
+        std::cerr << "Error: Could not open file for writing.\n";
+        exit(EXIT_FAILURE);
+    }
+
+    // GUARD: empty dataset
+    if (!dataset.size()) {
+        std::cerr << "Error: writeToFile(): empty dataset\n";
+        exit(EXIT_FAILURE);
+    }
+
+    std::cout << "output file:  " << outFilename << "\nWriting...";
+
+    // write dataset to file
+    unsigned records = dataset.size();
+    unsigned fields = dataset.at(0).size();
+    double recordClass;
+
+    //    output headings to csv
+    outFile << "Class" << delimiter;
+    for (unsigned field = 1; field < fields; field++) {
+        outFile << "f" << field << delimiter;
+        outFile << "f" << field << " Class A" << delimiter;
+        outFile << "f" << field << " Class B" << delimiter;
+    }
+    outFile << '\n';
+
+    //    output feature data
+    outFile << std::setprecision(8);
+    for (unsigned record = 0; record < records; record++) {
+
+        // copy class
+        recordClass = dataset.at(record).at(0);
+        outFile << recordClass << delimiter;
+
+        // copy feature data
+        for (unsigned field = 1; field < fields; field++) {
+            
+            // f# original data column
+            outFile << dataset.at(record).at(field) << delimiter;
+
+            // f# Class A column
+            if(recordClass == 1)
+                outFile << dataset.at(record).at(field);
+            
+            outFile << delimiter;
+
+            // f# Class B column
+            if(recordClass == 2)
+                outFile << dataset.at(record).at(field);
+
+            // last field gets newline
+            if (field < fields - 1)
+                outFile << delimiter;
+            else 
+                outFile << '\n';
+        }
+    }
+
+    std::cout << "complete\n";
+
+    outFile.close();
 
 }
