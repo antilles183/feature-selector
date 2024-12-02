@@ -4,6 +4,9 @@
 #include <iomanip>
 #include <string>
 #include <vector>
+#include <chrono>
+#include <fstream>
+#include "defs.h"
 
 
 class InputOutput {
@@ -18,5 +21,10 @@ class InputOutput {
 
         // OUTPUT FUNCTIONS
         void console(char l_symbol, unsigned l_repeat = 1, bool l_newline = false);
+        void writeToFile(const DataSet &dataset,
+                         std::string filename,
+                         std::string extension,
+                         char delimiter,
+                         std::string outputDirectory = "");
 
 };

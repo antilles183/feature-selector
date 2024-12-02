@@ -37,3 +37,6 @@ build/
 
 # Local Configs
 .editorconfig
+
+# program generated outputs
+data/*.csv
