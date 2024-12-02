@@ -5,7 +5,7 @@
 int test_Classifier() {
 
     Classifier classifier;
-    std::vector<std::vector<double>> trainingSet;
+    DataSet trainingSet;
     srand(66);
 
     unsigned records = 10;
@@ -34,7 +34,7 @@ int test_Classifier() {
     double predict1 = classifier.test(testInstance1);
 
     std::cout << "SHOW TRAINING:\n";
-    classifier.showTraining();
+    classifier.printTrainingData();
     
     std::cout << "\ntestInstance1: " << testInstance1.at(0) << '\t';
     for (unsigned feature = 1; feature < features; feature++)
