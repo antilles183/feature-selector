@@ -10,7 +10,6 @@ class Validator
 {
 
 private:
-
     Stopwatch m_stopwatch;
 
 public:
