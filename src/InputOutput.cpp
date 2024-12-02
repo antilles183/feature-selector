@@ -172,7 +172,7 @@ void InputOutput::console(char l_symbol, unsigned l_repeat, bool l_newline) {
  * @param delimiter 
  * @param outputDirectory 
 *******************************************************************************/
-void InputOutput::writeToFile(const std::vector<std::vector<double>> &dataset,
+void InputOutput::writeToFile(const DataSet &dataset,
                               std::string filename,
                               std::string extension,
                               char delimiter,
