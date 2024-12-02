@@ -5,38 +5,29 @@
 #include <cmath>
 
 
-Classifier::Classifier(/* args */)
-{
-}
 
-Classifier::~Classifier()
+/*******************************************************************************
+ * @brief 
+ * 
+ * @param trainingSet 
+*******************************************************************************/
+void Classifier::train(const DataSet &trainingSet)
 {
-}
+    m_stopwatch.start();
 
-
-void Classifier::train(const std::vector<std::vector<double>> &trainingSet) 
-{
     // GUARD: bad dataset
     if (!trainingSet.size()) {
-        std::cerr << "ERROR: Classifier::train()\n";
+        std::cerr << "\nERROR: Classifier::train()\n";
         exit(EXIT_FAILURE);
     }
 
-    m_dataset.clear();
+    m_dataset = trainingSet;
 
-    unsigned records = trainingSet.size();
-    unsigned features = trainingSet.at(0).size();
-
-    for (unsigned record = 0; record < records; record++) {
-
-        m_dataset.push_back(std::vector<double>());
-        for (unsigned feature = 0; feature < features; feature++) {
-            m_dataset.at(record).push_back(trainingSet.at(record).at(feature));
-
-        }
-    }
+    m_stopwatch.stop();
+    m_trainDuration = m_stopwatch.duration();
 
 }
+
 
 
 /*******************************************************************************
@@ -45,23 +36,31 @@ void Classifier::train(const std::vector<std::vector<double>> &trainingSet)
  * @param unknown 
  * @return double 
 *******************************************************************************/
-double Classifier::test(std::vector<double> unknown)
+double Classifier::test(const std::vector<double> &unknown)
 {
-    // test instance parameter has 1 less field than m_dataset because unlabeled
-
-    // GUARD
+    // GUARDS
     if(!m_dataset.size()) {
         std::cout << "ERROR: test(): No training data\n";
         exit(EXIT_FAILURE);
     }
 
+    if(m_dataset.at(0).size() != unknown.size()) {
+        std::cout << "ERROR: test(): size mismatch\n";
+        exit(EXIT_FAILURE);
+    }
+
+    m_stopwatch.start();
+    // std::cout << "testing...";
+
+    // local declarations
     unsigned records = m_dataset.size();
     unsigned features = m_dataset.at(0).size();
     double distance;
     double minDistance = DBL_MAX;
-    std::vector<std::vector<double>> nn;
+    DataSet nn;
     double prediction;
 
+    // traverse training data keeping track of nearest neighbor
     for (unsigned record = 0; record < records; record++) {
 
         distance = euclideanDistance( m_dataset.at(record), unknown );
@@ -77,28 +76,41 @@ double Classifier::test(std::vector<double> unknown)
         }
     }
 
-    // ERROR TEST: no neigbors
+    // ERROR TEST: no neigbors means somethings wrong 
     if (nn.empty()) {
         std::cout << "ERROR: test(): No nearest neighbor\n";
         exit(EXIT_FAILURE);
     }
 
     // TODO: ask how to handle equidistance neigbors. Using random selection
-    // prediction = nn.at( rand() % nn.size() ).at(0);
     std::vector<double> neighbor = nn.at( rand() % nn.size() );
 
-    std::cout << "\nn-neighbor: " << neighbor.at(0) << '\t';
-    for (unsigned feature = 1; feature < features; feature++)
-        std::cout << std::setw(8) << neighbor.at(feature) << '\t';
-    std::cout << "\n\n";
+    // OUTPUT: prints nearest neighbor data to console
+    if(false) {
+        std::cout << "n-neighbor: " << neighbor.at(0) << '\t';
+        for (unsigned feature = 1; feature < features; feature++)
+            std::cout << std::setw(8) << neighbor.at(feature) << '\t';
+        std::cout << "\n";
+    }
+
+    m_stopwatch.stop();
+    m_testDuration = m_stopwatch.duration();
+    // std::cout << "complete (" << m_stopwatch.getMicroseconds() << " microseconds)\n";
 
     return neighbor.at(0);
 }
 
 
 
+/*******************************************************************************
+ * @brief 
+ * 
+ * @param v1 
+ * @param v2 
+ * @return double 
+*******************************************************************************/
 double Classifier::euclideanDistance(const std::vector<double> &v1,
-                                     const std::vector<double> &v2)
+                                     const std::vector<double> &v2) const
 {
     // GUARD: unequal vector sizes
     if (v1.size() != v2.size()) {
@@ -106,6 +118,7 @@ double Classifier::euclideanDistance(const std::vector<double> &v1,
         exit(EXIT_FAILURE);
     }
 
+    // d = sqrt( (a1-b1)^2 + (a2-b2)^2 + ... )
     double squaredSum{0};
     for (unsigned feature = 1; feature < v1.size(); feature++)
         squaredSum += std::pow( v1.at(feature) - v2.at(feature) , 2);
@@ -115,34 +128,56 @@ double Classifier::euclideanDistance(const std::vector<double> &v1,
 
 
 
+/*******************************************************************************
+ * @brief 
+ * 
+ * @return int 
+*******************************************************************************/
+int Classifier::getTrainDuration() const
+{
+    return std::chrono::duration_cast<std::chrono::microseconds>( m_trainDuration ).count();
+}
+
+
+
+/*******************************************************************************
+ * @brief 
+ * 
+ * @return int 
+*******************************************************************************/
+int Classifier::getTestDuration() const
+{
+    return std::chrono::duration_cast<std::chrono::microseconds>( m_testDuration ).count();
+}
+
+
 
 /*******************************************************************************
  * @brief 
  * 
 *******************************************************************************/
-void Classifier::showTraining() const 
+void Classifier::printTrainingData() const 
 {
     // GUARD
     if(!m_dataset.size()) {
-        std::cout << "ERROR: showTraining(): No training data\n";
+        std::cout << "ERROR: printTrainingData(): No training data\n";
         exit(EXIT_FAILURE);
     }
 
+    // local declarations
     unsigned records = m_dataset.size();
     unsigned features = m_dataset.at(0).size();
 
-    
+    // output training data
     std::cout << std::setprecision(8);
     for(unsigned record = 0; record < records; record++) {
 
         std::cout << record << " : ";
         std::cout << m_dataset.at(record).at(0) << '\t';
 
-        for(unsigned feature = 1; feature < features; feature++) {
+        for(unsigned feature = 1; feature < features; feature++)
             std::cout << std::setw(8) << m_dataset.at(record).at(feature) << '\t';
-        }
 
         std::cout << '\n';
-
     }
 }

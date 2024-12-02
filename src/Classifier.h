@@ -1,23 +1,30 @@
 #pragma once
 #include <vector>
+#include "defs.h"
+#include "Stopwatch.h"
 
 
 class Classifier
 {   
 
 private:
-    std::vector<std::vector<double>> m_dataset;
+    DataSet m_dataset;
+    Stopwatch m_stopwatch;
+    std::chrono::steady_clock::duration m_trainDuration;
+    std::chrono::steady_clock::duration m_testDuration;
 
 public:
-    Classifier(/* args */);
-    ~Classifier();
 
-    void train(const std::vector<std::vector<double>> &trainingSet);
-    double test(std::vector<double> unknown);
+    void train(const DataSet &trainingSet);
+
+    double test(const std::vector<double> &unknown);
 
     double euclideanDistance(const std::vector<double> &v1,
-                             const std::vector<double> &v2);
-    void showTraining() const;
+                             const std::vector<double> &v2) const;
+
+    int getTrainDuration() const;
+    int getTestDuration() const;
+    void printTrainingData() const;
 
 };
 
