@@ -5,6 +5,7 @@ add_library(niceUltronLib
     Search.cpp
     Classifier.cpp
     Validator.cpp
+    Stopwatch.cpp
 )
 
 target_link_libraries(niceUltronLib)
