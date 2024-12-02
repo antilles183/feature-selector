@@ -12,7 +12,7 @@
 /*******************************************************************************
 * PROTOTYPES
 *******************************************************************************/
-void getDataSet(DataSet &dataset);
+int getDataSet(DataSet &dataset);
 void normalizeZscore(const DataSet &dataset,
                      DataSet &datasetNormal);
 void printDataSet(const DataSet &dataset);
@@ -30,15 +30,17 @@ int main(int argc, char *argv[]) {
     Classifier classifier;
     FeatureSet featureSet;
 
-    getDataSet(dataset);
+    int datasetSelectionIndex = getDataSet(dataset);
     normalizeZscore(dataset, datasetNormal);
 
 
-    // small test dataset has 100 instances. large has 1000
-    if(dataset.size() == 100)
+    // different features for different datasets
+    if(datasetSelectionIndex == 1)
         featureSet = {3, 5, 7};
-    else 
+    else if (datasetSelectionIndex == 2)
         featureSet = {1, 15, 27};
+    else if (datasetSelectionIndex == 3)
+        featureSet = {2, 4, 6};
 
 
     double accuracy = validator.evaluate(featureSet, 
@@ -151,7 +153,7 @@ void normalizeZscore(const DataSet &dataset,
  * 
  * @param dataset 
 *******************************************************************************/
-void getDataSet(DataSet &dataset)
+int getDataSet(DataSet &dataset)
 {
     InputOutput io;
     std::ifstream dataFile;
@@ -195,6 +197,8 @@ void getDataSet(DataSet &dataset)
     dataFile.close();
 
     std::cout << "complete\n";
+
+    return datasetIndex;
 
 }
 
