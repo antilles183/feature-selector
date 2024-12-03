@@ -1,4 +1,5 @@
 #include "InputOutput.h"
+#include "Search.h"
 #include "Evaluator.h"
 #include "Classifier.h"
 #include "Validator.h"
@@ -7,7 +8,19 @@
 #include <sstream>
 #include <cmath>
 
-
+/*******************************************************************************
+- Group: Andrew Tilles – atill006 – Session 22
+- DatasetID: 211
+- Small Dataset Results:
+	- Forward: Feature Subset: {3,5}, Acc: 0.9200
+	- Backward: Feature Subset: {2,4,5,7,10} Acc: 0.8200
+- Large Dataset Results:
+	- Forward: Feature Subset: {1,27}, Acc: 0.955
+	- Backward: Feature Subset: {27}, Acc: 0.8470
+- Titanic Dataset Results:
+	- Forward: Feature Subset: {1,2,6}, Acc: 0.7759
+	- Backward: Feature Subset: {1,2,6}, Acc: 0.7815
+*******************************************************************************/
 
 /*******************************************************************************
 * PROTOTYPES
@@ -24,35 +37,52 @@ void printDataSet(const DataSet &dataset);
 *******************************************************************************/
 int main(int argc, char *argv[]) {
     
-    DataSet dataset;
-    DataSet datasetNormal;
+    InputOutput io;
+    Search search;
+    DataSet dataSet;
+    DataSet dataSetNormal;
     Validator validator;
     Classifier classifier;
     FeatureSet featureSet;
 
-    int datasetSelectionIndex = getDataSet(dataset);
-    normalizeZscore(dataset, datasetNormal);
+    int datasetSelectionIndex = getDataSet(dataSet);
+    normalizeZscore(dataSet, dataSetNormal);
 
+    // prompt for algorithm
+    std::cout << "\nChoose an algorithm:\n";
+    std::cout << "\t1. Forward Selection\n";
+    std::cout << "\t2. Backward Elimination\n";
+    std::cout << "\t3. atill006 Special Algorithm\n\n";
+    int algorithm = io.getValidInteger(1, 3, 1);
+    std::cout << "\n";
 
-    // different features for different datasets
-    if(datasetSelectionIndex == 1)
-        featureSet = {3, 5, 7};
-    else if (datasetSelectionIndex == 2)
-        featureSet = {1, 15, 27};
-    else if (datasetSelectionIndex == 3)
-        featureSet = {2, 4, 6};
+    // run selected algorithm
+    io.console('-', 80, true);
+    switch (algorithm)
+    {
+    case 1:
+        std::cout << "***RUNNING FORWARD SELECTION***\n";
+        io.console('-', 80, true);
+        search.forwardSelection(dataSetNormal, validator.evaluate, classifier);
+        break;
+    
+    case 2:
+        std::cout << "***RUNNING BACKWARD ELIMINATION***\n";
+        io.console('-', 80, true);
+        search.backwardElimination(dataSetNormal, validator.evaluate, classifier);
+        break;
 
+    case 3:
+        std::cout << "***RUNNING ATILL006 SPECIAL ALGORITHM***\n";
+        io.console('-', 80, true);
+        search.specialAlgorithm(featureSet, Evaluator::random);
+        break;
 
-    double accuracy = validator.evaluate(featureSet, 
-                                          datasetNormal, 
-                                          classifier);
+    default:
+        std::cout << "ERROR: algorithm not provided\n";
+        break;
+    }
 
-    std::cout << "accuracy == " << accuracy << "\n";
-
-    // // output normalized dataset to file
-    // InputOutput io;
-    // io.writeToFile(dataset, "small-test-dataset", ".csv", ',', "../data/");
-    // io.writeToFile(datasetNormal, "small-test-dataset-normal-z-score", ".csv", ',', "../data/");
 
     return 0;
 
@@ -163,6 +193,7 @@ int getDataSet(DataSet &dataset)
     int datasetIndex;
 
     // prompt for dataset
+    std::cout << "Welcome to atill006's Feature Selection Algorithm.\n";
     std::cout << "\nChoose a dataset:\n";
     std::cout << "\t1. small-test-dataset.txt\n";
     std::cout << "\t2. large-test-dataset.txt\n";
