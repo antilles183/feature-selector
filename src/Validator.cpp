@@ -22,7 +22,7 @@ double Validator::evaluate(const FeatureSet& featureSet,
 
     Stopwatch stopwatch;
     stopwatch.start();
-    std::cout << "evaluate...\n\n";
+    // std::cout << "evaluate...\n\n";
 
     // local declarations
     DataSet dataSubset;
@@ -67,20 +67,20 @@ double Validator::evaluate(const FeatureSet& featureSet,
 
         
         // OUTPUT: trace to console. just printing first & every 10
-        int iteration = (it - dataSubset.begin()) + 1;
-        if (iteration == 1 || !(iteration % 10)) {
-            std::cout << "(" << prediction << " ?= " << (*it).at(0) << ")    ";
-            std::cout << "accuracy at " << std::setw(3) << (it - dataSubset.begin()) + 1;
-            std::cout << " == " << std::setw(2) << correct << "/" << std::setw(3) << (it - dataSubset.begin()) + 1 ;
-            std::cout << " == " << std::setw(8) << correct / ((it - dataSubset.begin()) + 1) << "    ";
-            std::cout << "(train " << std::setw(2) << classifier.getTrainDuration() << " microseconds)\t";
-            std::cout << "(test "  << std::setw(2) << classifier.getTestDuration()  << " microseconds)";
-            std::cout << '\n';
-        }
+        // int iteration = (it - dataSubset.begin()) + 1;
+        // if (iteration == 1 || !(iteration % 10)) {
+        //     std::cout << "(" << prediction << " ?= " << (*it).at(0) << ")    ";
+        //     std::cout << "accuracy at " << std::setw(3) << (it - dataSubset.begin()) + 1;
+        //     std::cout << " == " << std::setw(2) << correct << "/" << std::setw(3) << (it - dataSubset.begin()) + 1 ;
+        //     std::cout << " == " << std::setw(8) << correct / ((it - dataSubset.begin()) + 1) << "    ";
+        //     std::cout << "(train " << std::setw(2) << classifier.getTrainDuration() << " microseconds)\t";
+        //     std::cout << "(test "  << std::setw(2) << classifier.getTestDuration()  << " microseconds)";
+        //     std::cout << '\n';
+        // }
     }
 
     stopwatch.stop();
-    std::cout << "\nevaluate...complete (" << stopwatch.getMicroseconds() << " microseconds)\n\n";
+    // std::cout << "\nevaluate...complete (" << stopwatch.getMicroseconds() << " microseconds)\n\n";
 
     return correct / dataSet.size();
 

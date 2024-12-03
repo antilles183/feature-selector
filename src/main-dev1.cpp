@@ -47,8 +47,7 @@ int main(int argc, char *argv[]) {
     case 1:
         std::cout << "***RUNNING FORWARD SELECTION***\n";
         io.console('-', 80, true);
-        // search.forwardSelection(featureSet, Evaluator::random);
-        search.forwardSelection(featureSet, Validator::random);
+        search.forwardSelection(featureSet, Evaluator::random);
         break;
     
     case 2:
