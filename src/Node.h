@@ -1,12 +1,13 @@
 #pragma once
 #include <set>
 #include <iostream>
+#include "defs.h"
 
 class Node
 {
 private:
     
-    std::set<int> _featureSet;
+    FeatureSet _featureSet;
     double _accuracy;
 
 public:
@@ -19,6 +20,7 @@ public:
 
     double accuracy() const;
     void setAccuracy(double acc);
+    FeatureSet& fs();
 
     
     // OPERATOR OVERLOADS

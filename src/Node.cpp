@@ -89,6 +89,12 @@ void Node::setAccuracy(double acc)
 
 
 
+FeatureSet& Node::fs()
+{
+    return _featureSet;
+}
+
+
 
 /* # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
