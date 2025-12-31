@@ -1,4 +1,4 @@
-add_library(niceUltronLib
+add_library(featureSelectorLib
     InputOutput.cpp
     Node.cpp
     Evaluator.cpp
@@ -8,4 +8,4 @@ add_library(niceUltronLib
     Stopwatch.cpp
 )
 
-target_link_libraries(niceUltronLib)
+target_link_libraries(featureSelectorLib)
