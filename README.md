@@ -1,14 +1,23 @@
-# nice-ultron
+# feature-selector
 
-### CS 170 - Intro to Artificial Intelligence - Fall 2024 - Project 2
+A from scratch implementation of Forward Selection and Backward Elimination feature selection algorithms written in C++ for Intro to Artificial Intelligence Fall 2024
 
 <br/>
 
 ## Compile & Run
 ```bash
-cd nice-ultron
+cd feature-selector
 cmake -B build
 cd build
 make
-./bin/nice-ultron
+./bin/feature-selector
 ```
+<br/>
+
+## About the Data
+
+| Dataset                 | # of Features | # of Datapoints |
+| ----------------------- | ------------- | --------------- |
+| small-test-dataset      | 11            | 100             |
+| large-test-dataset      | 41            | 1000            |
+| titanic-clean           | 7             | 714             |
