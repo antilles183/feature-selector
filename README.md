@@ -1,6 +1,6 @@
-# nice-ultron
+# feature-selector
 
-### CS 170 - Intro to Artificial Intelligence - Fall 2024 - Project 2
+### CS 170 - Intro to Artificial Intelligence - Project 2
 
 <br/>
 
