@@ -9,7 +9,7 @@
 #include <cmath>
 
 /*******************************************************************************
-- Group: Andrew Tilles – atill006 – Session 22
+- Group: atill006 – Session 22
 - DatasetID: 211
 - Small Dataset Results:
 	- Forward: Feature Subset: {3,5}, Acc: 0.9200
