@@ -1,6 +1,6 @@
 # feature-selector
 
-An implementation of Forward Selection and Backward Elimination feature selection algorithms — built from scratch in C++ for an Intro to AI course. Parses and normalizes Titanic data sets before performing chosen algorithm with verbose output.
+An implementation of Forward Selection and Backward Elimination feature selection algorithms — built from scratch in C++ for an Intro to AI course. Parses and normalizes Titanic data sets before performing chosen algorithm with verbose output. Uses Nearest Neighbor classification and a simple k-fold cross validation of leave one out.
 
 <br/>
 
